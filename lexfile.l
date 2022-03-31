@@ -13,6 +13,8 @@
 
 [ \t]	;		 /* ignore white space */
 
+_	{ return UNDERSCORE; }
+
 PRINT	{ return PRINT; }
 (\"(\\.|[^"\\])*\") { yylval.sval = strdup(yytext); return STRING; }
 

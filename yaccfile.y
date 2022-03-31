@@ -1,10 +1,13 @@
 %{
 #include "symbol_table.h"
 #include <string.h>
+#include <unistd.h>
+
 int yylex();
 int yyerror(char *);
 
 int line_num = 0;
+int stop = 0;
 %}
 
 %union {
@@ -12,7 +15,7 @@ int line_num = 0;
 	char* sval;
 	struct symtab *symp;
 }
-%token NEWLINE COMMENT
+%token NEWLINE COMMENT UNDERSCORE
 %token <symp> NAME
 %token <dval> NUMBER
 %token PRINT
@@ -25,8 +28,8 @@ int line_num = 0;
 %type <dval> expression
 %%
 
-statement_list:	statement NEWLINE { line_num++; }
-	|	statement_list statement NEWLINE
+statement_list:	statement { line_num++; }
+	|	statement NEWLINE statement_list {}
 	;
 
 statement:	NAME '=' expression	{ $1->value = $3; }
@@ -44,6 +47,7 @@ statement:	NAME '=' expression	{ $1->value = $3; }
 		}
 	| COMMENT NEWLINE {}
 	| NEWLINE {}
+	| UNDERSCORE { stop = 1; }
 	;
 
 print_expressions: print_expression
@@ -129,8 +133,10 @@ char *s;
 } /* symlook */
 
 /* Auxiliary functions */
-int main() { 
-   while(1) {
+int main(int argc, char *argv[]) {
+	if(argv[1]){freopen(argv[1],"r",stdin);}
+	else {puts("REPL MODE:");}
+   while(!stop) {
    	yyparse();
    }
 }
