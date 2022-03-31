@@ -40,22 +40,7 @@ statement:	NAME '=' expression	{ $1->value = $3; }
 				char temp_string[2] = {$1[i],'\0'};
 				strcat(buffer,temp_string);
 			}
-			printf("%s", buffer); 
-		}
-	|  NAME { 
-			if($1->string_value){
-				int len = strlen($1->string_value);
-				char buffer[500] = "";
-				for(int i = 1; i < len - 1; i++){
-					char temp_string[2] = {$1->string_value[i],'\0'};
-					strcat(buffer,temp_string);
-				}
-				printf("%s\n", buffer); 
-			}
-			else if ($1->value){
-				double __ = $1->value; 
-				printf("%f\n",__);
-			} 
+			printf("%s\n", buffer); 
 		}
 	| COMMENT NEWLINE {}
 	| NEWLINE {}
@@ -103,6 +88,20 @@ expression:	expression '+' expression { $$ = $1 + $3; }
 	|	'-' expression %prec UMINUS	{ $$ = -$2; }
 	|	'(' expression ')'	{ $$ = $2; }
 	|	NUMBER
+	|  NAME { 
+			if($1->string_value){
+				int len = strlen($1->string_value);
+				char buffer[500] = "";
+				for(int i = 1; i < len - 1; i++){
+					char temp_string[2] = {$1->string_value[i],'\0'};
+					strcat(buffer,temp_string);
+				}
+			}
+			else if ($1->value){
+				double __ = $1->value; 
+				$$ = $1->value;
+			} 
+		}
 	;
 %%
 /* look up a symbol table entry, add if not present */
