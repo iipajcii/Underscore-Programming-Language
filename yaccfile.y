@@ -135,8 +135,10 @@ char *s;
 /* Auxiliary functions */
 int main(int argc, char *argv[]) {
 	if(argv[1]){freopen(argv[1],"r",stdin);}
-	else {puts("REPL MODE:");}
+	else {puts("*** ENTERING REPL ***");}
    while(!stop) {
    	yyparse();
    }
+   if(argv[1]){puts("\n*** YOUR CODE WAS INTERPRETED SUCCESSFULLY! ***\n");}
+   else {puts("*** EXITING REPL ***");}
 }
