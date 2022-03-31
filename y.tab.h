@@ -45,34 +45,38 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NAME = 258,
-    NUMBER = 259,
-    PRINT = 260,
-    STRING = 261,
-    PRINT_COMMA = 262,
-    UMINUS = 263
+    NEWLINE = 258,
+    COMMENT = 259,
+    NAME = 260,
+    NUMBER = 261,
+    PRINT = 262,
+    STRING = 263,
+    COMMA = 264,
+    UMINUS = 265
   };
 #endif
 /* Tokens.  */
-#define NAME 258
-#define NUMBER 259
-#define PRINT 260
-#define STRING 261
-#define PRINT_COMMA 262
-#define UMINUS 263
+#define NEWLINE 258
+#define COMMENT 259
+#define NAME 260
+#define NUMBER 261
+#define PRINT 262
+#define STRING 263
+#define COMMA 264
+#define UMINUS 265
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 8 "yaccfile.y" /* yacc.c:1909  */
+#line 10 "yaccfile.y" /* yacc.c:1909  */
 
 	double dval;
 	char* sval;
 	struct symtab *symp;
 
-#line 76 "y.tab.h" /* yacc.c:1909  */
+#line 80 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

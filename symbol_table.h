@@ -8,7 +8,8 @@
 struct symtab {
 	char *name;
 	double value;
-	char *string_value ;
+	char *string_value;
+	int line_num;
 } symtab[NSYMS];
 
 struct symtab* symlook();

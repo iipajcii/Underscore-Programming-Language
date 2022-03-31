@@ -2,6 +2,7 @@
 #include "y.tab.h"
 #include "symbol_table.h"
 #include <math.h>
+#include <stdio.h>
 %}
 
 %%
@@ -15,7 +16,7 @@
 PRINT	{ return PRINT; }
 (\"(\\.|[^"\\])*\") { yylval.sval = strdup(yytext); return STRING; }
 
-, {return PRINT_COMMA;}
+, {return COMMA;}
 
 [A-Za-z][A-Za-z0-9]*	{	/* return symbol pointer */
 		yylval.symp = symlook(yytext);
@@ -23,8 +24,10 @@ PRINT	{ return PRINT; }
 	}
 
 
-\n	|
-.	return yytext[0];
+[/]{2}.* {printf("comment"); return COMMENT;}
+. { return yytext[0]; }
+
+\n {return NEWLINE;}
 
 %%
 int yywrap(void) { 

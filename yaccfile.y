@@ -3,6 +3,8 @@
 #include <string.h>
 int yylex();
 int yyerror(char *);
+
+int line_num = 0;
 %}
 
 %union {
@@ -10,19 +12,21 @@ int yyerror(char *);
 	char* sval;
 	struct symtab *symp;
 }
+%token NEWLINE COMMENT
 %token <symp> NAME
 %token <dval> NUMBER
 %token PRINT
 %token <sval> STRING
 %left '-' '+'
 %left '*' '/'
-%left PRINT_COMMA
+%right COMMA
 %nonassoc UMINUS
 
 %type <dval> expression
 %%
-statement_list:	statement '\n'
-	|	statement_list statement '\n'
+
+statement_list:	statement NEWLINE { line_num++; }
+	|	statement_list statement NEWLINE
 	;
 
 statement:	NAME '=' expression	{ $1->value = $3; }
@@ -37,7 +41,7 @@ statement:	NAME '=' expression	{ $1->value = $3; }
 				strcat(buffer,temp_string);
 			}
 			printf("%s", buffer); 
-	}
+		}
 	|  NAME { 
 			if($1->string_value){
 				int len = strlen($1->string_value);
@@ -46,16 +50,18 @@ statement:	NAME '=' expression	{ $1->value = $3; }
 					char temp_string[2] = {$1->string_value[i],'\0'};
 					strcat(buffer,temp_string);
 				}
-				printf("%s", buffer); 
+				printf("%s\n", buffer); 
 			}
 			else if ($1->value){
 				double __ = $1->value; 
 				printf("%f\n",__);
 			} 
 		}
+	| COMMENT NEWLINE {}
+	| NEWLINE {}
 	;
 
-print_expressions: print_expression '\n'
+print_expressions: print_expression
 	| print_expression print_expressions
 
 print_expression: STRING {
@@ -68,7 +74,7 @@ print_expression: STRING {
 		printf("%s", buffer); 
 	}
 	| NUMBER { printf("%g", $1); }
-	| PRINT_COMMA {}
+	| COMMA {}
 	| NAME { 
 		if($1->string_value){
 			int len = strlen($1->string_value);
@@ -97,7 +103,6 @@ expression:	expression '+' expression { $$ = $1 + $3; }
 	|	'-' expression %prec UMINUS	{ $$ = -$2; }
 	|	'(' expression ')'	{ $$ = $2; }
 	|	NUMBER
-	|  NAME { $$ = $1->value; }
 	;
 %%
 /* look up a symbol table entry, add if not present */
