@@ -1,0 +1,6 @@
+radius = 7.88
+pi = 22.0 / 7.0
+area = pi * radius * radius
+PRINT "pi is ", pi
+PRINT "radius is ", radius
+PRINT "area is ", area
