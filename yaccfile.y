@@ -46,6 +46,7 @@ statement:	NAME '=' expression	{ $1->value = $3; }
 			printf("%s\n", buffer); 
 		}
 	| UNDERSCORE { stop = 1; }
+	| COMMENT {  }
 	;
 
 print_expressions: print_expression
