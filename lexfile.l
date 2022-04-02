@@ -29,6 +29,8 @@ PRINT	{ return PRINT; }
 
 \n {return NEWLINE;}
 
+#.* {return COMMENT; }
+
 %%
 int yywrap(void) { 
   return 1;
