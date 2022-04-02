@@ -61,7 +61,7 @@ print_expression: STRING {
 		}
 		printf("%s", buffer); 
 	}
-	| NUMBER { printf("%g", $1); }
+	| NUMBER { printf("%.2f", $1); }
 	| COMMA {}
 	| NAME { 
 		if($1->string_value){
@@ -75,7 +75,7 @@ print_expression: STRING {
 		}
 		else if ($1->value){
 			double __ = $1->value; 
-			printf("%f",__);
+			printf("%.2f",__);
 		} 
 	}
 
