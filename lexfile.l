@@ -25,8 +25,6 @@ PRINT	{ return PRINT; }
 		return NAME;
 	}
 
-
-[/]{2}.* {printf("comment"); return COMMENT;}
 . { return yytext[0]; }
 
 \n {return NEWLINE;}
