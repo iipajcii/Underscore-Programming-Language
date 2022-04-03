@@ -3,7 +3,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
-#define NSYMS 20	/* maximum number of symbols */
+#define NSYMS 200	/* maximum number of symbols */
 
 struct symtab {
 	char *name;
